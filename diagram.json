@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "author": "Smart Fire Alarm Project",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-st-nucleo-c031c6",
+      "id": "nucleo",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "fireButton",
+      "top": -80,
+      "left": 220,
+      "attrs": {
+        "color": "red",
+        "label": "Simulate Fire"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "redLed",
+      "top": 20,
+      "left": 220,
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "redResistor",
+      "top": 60,
+      "left": 220,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "greenLed",
+      "top": 120,
+      "left": 220,
+      "attrs": {
+        "color": "green"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "greenResistor",
+      "top": 160,
+      "left": 220,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "buzzer",
+      "top": 230,
+      "left": 220,
+      "attrs": {}
+    },
+        {
+      "type": "wokwi-potentiometer",
+      "id": "smokeSensor",
+      "top": 300,
+      "left": 350,
+      "attrs": {
+        "label": "Smoke Level"
+      }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "tempSensor",
+      "top": 400,
+      "left": 350,
+      "attrs": {
+        "label": "Temperature Level"
+      }
+    }
+  ],
+  "connections": [
+    ["$serialMonitor:TX", "nucleo:PA3", "", []],
+    ["$serialMonitor:RX", "nucleo:PA2", "", []],
+
+    ["nucleo:PA0", "fireButton:1.l", "blue", []],
+    ["fireButton:2.l", "nucleo:GND", "black", []],
+
+    ["nucleo:PA5", "redResistor:1", "red", []],
+    ["redResistor:2", "redLed:A", "red", []],
+    ["redLed:C", "nucleo:GND", "black", []],
+
+    ["nucleo:PA6", "greenResistor:1", "green", []],
+    ["greenResistor:2", "greenLed:A", "green", []],
+    ["greenLed:C", "nucleo:GND", "black", []],
+
+    ["nucleo:PA7", "buzzer:1", "orange", []],
+    ["buzzer:2", "nucleo:GND", "black", []],
+    ["smokeSensor:VCC", "nucleo:3V3.1", "red", []],
+    ["smokeSensor:GND", "nucleo:GND.1", "black", []],
+    ["smokeSensor:SIG", "nucleo:PA1", "orange", []],
+
+    ["tempSensor:VCC", "nucleo:3V3.1", "red", []],
+    ["tempSensor:GND", "nucleo:GND.1", "black", []],
+    ["tempSensor:SIG", "nucleo:PA4", "orange", []]
+  ],
+  "dependencies": {}
+}
