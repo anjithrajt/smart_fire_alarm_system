@@ -36,9 +36,9 @@ BUILD_DIR = build/debug/build
 ######################################
 # C sources
 C_SOURCES =  \
-Core/Src/main.c \
-Core/Src/stm32c0xx_it.c \
-Core/Src/stm32c0xx_hal_msp.c \
+main.c \
+stm32c0xx_it.c \
+stm32c0xx_hal_msp.c \
 Drivers/STM32C0xx_HAL_Driver/Src/stm32c0xx_hal.c \
 Drivers/STM32C0xx_HAL_Driver/Src/stm32c0xx_hal_cortex.c \
 Drivers/STM32C0xx_HAL_Driver/Src/stm32c0xx_hal_rcc.c \
@@ -55,7 +55,9 @@ Drivers/STM32C0xx_HAL_Driver/Src/stm32c0xx_hal_i2c.c \
 Drivers/STM32C0xx_HAL_Driver/Src/stm32c0xx_hal_i2c_ex.c \
 Drivers/STM32C0xx_HAL_Driver/Src/stm32c0xx_hal_uart.c \
 Drivers/STM32C0xx_HAL_Driver/Src/stm32c0xx_hal_uart_ex.c \
-Core/Src/system_stm32c0xx.c  
+system_stm32c0xx.c \
+Drivers/STM32C0xx_HAL_Driver/Src/stm32c0xx_hal_adc.c \
+Drivers/STM32C0xx_HAL_Driver/Src/stm32c0xx_hal_adc_ex.c \
 
 # ASM sources
 ASM_SOURCES =  \
@@ -113,6 +115,7 @@ AS_INCLUDES =
 # C includes
 C_INCLUDES =  \
 -ICore/Inc \
+-I. \
 -IDrivers/STM32C0xx_HAL_Driver/Inc \
 -IDrivers/STM32C0xx_HAL_Driver/Inc/Legacy \
 -IDrivers/CMSIS/Device/ST/STM32C0xx/Include \
@@ -153,7 +156,14 @@ all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET
 #######################################
 # list of objects
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
-vpath %.c $(sort $(dir $(C_SOURCES)))
+
+# Map each object to its exact source file
+define make-c-rule
+$(BUILD_DIR)/$(notdir $(1:.c=.o)): $(1) Makefile | $(BUILD_DIR)
+	$$(CC) -c $$(CFLAGS) $$< -o $$@
+endef
+
+$(foreach src,$(C_SOURCES),$(eval $(call make-c-rule,$(src))))
 # list of ASM program objects
 OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
 vpath %.s $(sort $(dir $(ASM_SOURCES)))

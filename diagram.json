@@ -71,15 +71,6 @@
       "attrs": {
         "label": "Smoke Level"
       }
-    },
-    {
-      "type": "wokwi-potentiometer",
-      "id": "tempSensor",
-      "top": 400,
-      "left": 350,
-      "attrs": {
-        "label": "Temperature Level"
-      }
     }
   ],
   "connections": [
